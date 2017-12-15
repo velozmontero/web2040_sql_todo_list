@@ -1,0 +1,34 @@
+body {
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(196, 196, 196);
+  font-family: 'Montserrat', sans-serif;
+  color: #000;
+}
+
+* {
+  outline: none;
+}
+
+.header {
+  padding-top: 40px;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.task-input {
+  font-size: 30px;
+  padding: 5px 10px;
+  margin: 30px;
+  height: 60px;
+  width: 600px;
+  border: 2px solid #000;
+  color: #000;
+}
