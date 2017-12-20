@@ -1,7 +1,6 @@
 body {
   margin: 0;
   height: 100vh;
-  width: 100vw;
   background-color: rgb(196, 196, 196);
   font-family: 'Montserrat', sans-serif;
   color: #000;
@@ -23,12 +22,58 @@ body {
   flex-direction: column;
 }
 
+#tasks_div{
+  margin: 0;
+  list-style-type: none;
+}
+  
+.remove {
+  z-index: 10;
+  right: 0;
+  position: absolute;
+  width: 40px;
+  height: 44px;
+  margin-top: -33px;
+  display: flex;
+  margin-right: -40px;
+  transition: margin-right 450ms;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+}
+
+.remove:hover {
+  color: #fff;
+}
+
+#no_tasks {
+  display: none;
+}
+
+.task {
+  overflow: hidden;
+  position: relative;
+  width: 600px;
+  padding: 20px 5px;
+  background-color:#a4a4a4;
+  font-size: 20px;
+  margin: 20px 0px;
+}
+
+.task:hover .remove {
+  margin-right: 0px;
+}
+
 .task-input {
   font-size: 30px;
-  padding: 5px 10px;
   margin: 30px;
   height: 60px;
   width: 600px;
   border: 2px solid #000;
   color: #000;
+}
+
+.complete {
+ background-color: rgb(226, 80, 80);
+ text-decoration: line-through;
 }

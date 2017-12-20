@@ -7,18 +7,88 @@ $(document).ready(function () {
 
       console.log('response ', res);
 
-      if (res.success){
-        res.rows.forEach(row => {
-          console.log('row ',row);
+      if (res.success) {
+        if (res.rows.length) {
+          res.rows.forEach(row => {
+            console.log('row ', row);
 
-          $('#tasks_ul').append(`
-            <li data-id="${row.id}">${row.task}</li>
+            $('#tasks_div').append(`
+            <div 
+            id=${row.id} 
+            class="task ${row.complete ? 'complete' : ''}" 
+            data-complete="${row.complete}" 
+            data-id="${row.id}"
+            >
+              ${row.task}
+              <span class='remove'>X</span>
+            </div>
           `);
-        });
+          });
+        }
+        else {
+          $('#no_tasks').show();
+        }
       }
-      
+      return events();
     }
   });
+
+  function events() {
+    $('div#tasks_div').on('click', 'div.task', function () {
+      var complete = $(this).data('complete');
+      var id = $(this).data('id');
+
+      console.log('div id ', id);
+      console.log('div status ', complete);
+
+      $.ajax({
+        url: "http://localhost:9000/change-status",
+        method: 'POST',
+        data: {
+          complete: !complete,
+          id: id
+        },
+        success: function (response) {
+          var res = JSON.parse(response);
+
+          if (res.success) {
+            console.log('response ', res);
+            var lid = '#' + id;
+            $(lid).toggleClass('complete');
+          }
+        }
+      });
+    });
+
+    $('div#tasks_div').on('click', 'div.task > span.remove', function (e) {
+      e.stopPropagation();
+      // console.log('removing ', this);
+
+      var id = $(this).parent().data('id');
+      var divid = '#'+id;
+      console.log('id ', id);
+
+      $.ajax({
+        url: "http://localhost:9000/delete-task",
+        method: 'POST',
+        data: {
+          id: id
+        },
+        success: function (response) {
+          var res = JSON.parse(response);
+
+          if (res.success) {
+            $(divid).remove();
+          }
+        }
+      });
+    });
+  }
+
+  $('#task_input').keyup(function(e) {
+    var text = $(this).val();
+    $(this).val(text.replace(/\W/g, ''));
+  })
 
   function addTask(){
     var text = $('#task_input').val();
@@ -35,14 +105,26 @@ $(document).ready(function () {
           console.log('response ', res);
 
           if (res.success) {
-        
-            $('#tasks_ul').append(`
-              <li>${res.task}</li>
+            var id = '#'+res.id;
+            var removeId = '#'+res.id;
+
+            $('#no_tasks').hide();
+
+            $('#tasks_div').append(`
+              <div 
+              id=${res.id} 
+              class="task ${res.complete ? 'complete' : ''}" 
+              data-complete="false" 
+              data-id="${res.id}"
+              >
+                ${res.task}
+                <span class='remove'>X</span>
+              </div>
             `);
-            
+
             $('#task_input').val('');
-          
           }
+          
         }
       });
     }
@@ -52,6 +134,6 @@ $(document).ready(function () {
     if(e.which === 13){
       addTask();
     }
-  })
+  });
   
 });
