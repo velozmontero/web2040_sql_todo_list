@@ -23,7 +23,8 @@ module.exports = function (app, connection) {
             success: false,
           });
         }
-      });
+      }
+    );
   });
 
   app.post('/add-task', function (req, res) {

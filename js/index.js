@@ -87,7 +87,7 @@ $(document).ready(function () {
 
   $('#task_input').keyup(function(e) {
     var text = $(this).val();
-    $(this).val(text.replace(/\W/g, ''));
+    $(this).val(text.replace(/[^a-zA-Z 0-9\$\.\-\_%@#\*\+'=!&"?<>,;:]/g, ''));
   })
 
   function addTask(){
